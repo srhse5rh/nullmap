@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Build_x64:
+    runs-on: windows-2022
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup msbuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build
+        run: msbuild /t:build nullmap\nullmap.sln /p:Configuration="Release" /p:Platform=x64 -maxcpucount:8
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nullmap_x64
+          path: |
+            *
